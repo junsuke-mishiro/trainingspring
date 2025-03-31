@@ -34,20 +34,29 @@ public class UserController {
 		model.addAttribute("userlist", userlist);
 		return "user/list";
 	}
-	
+
 	/**
 	 * ユーザー新規登録画面を表示
 	 * @pram mode Mode
 	 * @return ユーザー情報一覧画面
 	 */
 
-	 @GetMapping(value = "/user/add")
-	 public String displayAdd(Model model) {
-		 return "user/add";
-	 }
-	 
-	 @GetMapping("/user/{id}")
-	 public String displayView(@PathVariable Long id, Model model) {
-		 return "user/view";
-	 }
+	@GetMapping(value = "/user/add")
+	public String displayAdd(Model model) {
+		return "user/add";
+	}
+
+	/**
+	 * ユーザー情報詳細画面を表示
+	 * @param id 表示するユーザーID
+	 * @param model Model
+	 * @return ユーザー情報詳細画面
+	 */
+
+	@GetMapping("/user/{id}")
+	public String displayView(@PathVariable Long id, Model model) {
+		User user = userService.findById(id);
+		model.addAttribute("userData", user);
+		return "user/view";
+	}
 }
