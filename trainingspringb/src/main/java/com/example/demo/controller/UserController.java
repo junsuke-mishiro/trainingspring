@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.example.demo.dto.UserRequest;
+import com.example.demo.dto.UserUpdateRequest;
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
 
@@ -34,7 +35,7 @@ public class UserController {
 	/**
 	 * ユーザー情報一覧画面を表示
 	 * @param model Model
-	 * @return ユーザー情報一覧画面のHTML
+	 * @return ユーザー情報一覧画面
 	 */
 	@GetMapping(value = "/user/list")
 	public String displayList(Model model) {
@@ -90,4 +91,45 @@ public class UserController {
 		model.addAttribute("userData", user);
 		return "user/view";
 	}
+	
+	/**
+	 * ユーザー編集画面を表示
+	 * @param id 表示するユーザーID
+	 * @param model Model
+	 * @return ユーザー編集画面
+	 */
+	@GetMapping("/user/{id}/edit")
+	public String displayEdit(@PathVariable Long id, Model model) {
+		User user = userService.findById(id);
+		UserUpdateRequest userUpdateRequest = new UserUpdateRequest();
+		userUpdateRequest.setId(user.getId());
+		userUpdateRequest.setName(user.getName());
+		userUpdateRequest.setPhone(user.getPhone());
+		userUpdateRequest.setAddress(user.getAddress());
+		model.addAttribute("userUpdateRequest", userUpdateRequest);
+		return "user/edit";
+	}
+	
+	/**
+	 * ユーザー更新
+	 * @param userUpdateRequest リクエストデータ
+	 * @param result エラーチェック
+	 * @param model Model
+	 * @return ユーザー情報詳細画面
+	 */
+	@RequestMapping(value = "/user/update", method = RequestMethod.POST)
+	public String update(@Validated @ModelAttribute UserUpdateRequest userUpdateRequest, BindingResult result, Model model) {
+		if(result.hasErrors()) {
+			List<String> errorList = new ArrayList<String>();
+			
+			for(ObjectError error : result.getAllErrors()) {
+				errorList.add(error.getDefaultMessage());
+			}
+			model.addAttribute("validationError", errorList);
+			return "user/edit";
+		}
+		//ユーザー情報の更新
+		userService.update(userUpdateRequest);
+		return String.format("redirect:/user/%d", userUpdateRequest.getId());
+	}	
 }
