@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.dto.UserRequest;
+import com.example.demo.dto.UserSearchRequest;
 import com.example.demo.dto.UserUpdateRequest;
 import com.example.demo.entity.User;
+import com.example.demo.repository.UserMapper;
 import com.example.demo.repository.UserRepository;
 
 /**
@@ -71,4 +73,20 @@ public class UserService {
 		user.setUpdateDate(new Date());
 		userRepository.save(user);
 	}
+	
+	/**
+	 * ユーザー情報 Mapper
+	 */
+	@Autowired
+	private UserMapper userMapper;
+	
+	/**
+	 * ユーザー情報検索
+	 * @param userSearchRequest リクエストデータ
+	 * @return 検索結果
+	 */
+	public User search(UserSearchRequest userSearchRequest) {
+		return userMapper.search(userSearchRequest);
+	}
+	
 }
