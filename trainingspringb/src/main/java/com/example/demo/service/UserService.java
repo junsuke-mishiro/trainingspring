@@ -11,8 +11,8 @@ import com.example.demo.dto.UserRequest;
 import com.example.demo.dto.UserSearchRequest;
 import com.example.demo.dto.UserUpdateRequest;
 import com.example.demo.entity.User;
-import com.example.demo.repository.UserMapper;
-import com.example.demo.repository.UserRepository;
+import com.example.demo.repository.jpa.UserRepository;
+import com.example.demo.repository.mybatis.UserMapper;
 
 /**
  * ユーザー情報 Service
@@ -73,13 +73,13 @@ public class UserService {
 		user.setUpdateDate(new Date());
 		userRepository.save(user);
 	}
-	
+
 	/**
 	 * ユーザー情報 Mapper
 	 */
 	@Autowired
 	private UserMapper userMapper;
-	
+
 	/**
 	 * ユーザー情報検索
 	 * @param userSearchRequest リクエストデータ
@@ -88,5 +88,5 @@ public class UserService {
 	public User search(UserSearchRequest userSearchRequest) {
 		return userMapper.search(userSearchRequest);
 	}
-	
+
 }

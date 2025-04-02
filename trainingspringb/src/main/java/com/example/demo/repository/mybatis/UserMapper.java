@@ -1,6 +1,8 @@
-package com.example.demo.repository;
+package com.example.demo.repository.mybatis;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Repository;
 
 import com.example.demo.dto.UserSearchRequest;
 import com.example.demo.entity.User;
@@ -9,6 +11,8 @@ import com.example.demo.entity.User;
  * ユーザー情報 Mapper
  */
 @Mapper
+@Configuration
+@Repository // Bean として認識させる
 public interface UserMapper {
 
 	/**

@@ -92,7 +92,7 @@ public class UserController {
 		model.addAttribute("userData", user);
 		return "user/view";
 	}
-	
+
 	/**
 	 * ユーザー編集画面を表示
 	 * @param id 表示するユーザーID
@@ -110,7 +110,7 @@ public class UserController {
 		model.addAttribute("userUpdateRequest", userUpdateRequest);
 		return "user/edit";
 	}
-	
+
 	/**
 	 * ユーザー更新
 	 * @param userUpdateRequest リクエストデータ
@@ -119,11 +119,12 @@ public class UserController {
 	 * @return ユーザー情報詳細画面
 	 */
 	@RequestMapping(value = "/user/update", method = RequestMethod.POST)
-	public String update(@Validated @ModelAttribute UserUpdateRequest userUpdateRequest, BindingResult result, Model model) {
-		if(result.hasErrors()) {
+	public String update(@Validated @ModelAttribute UserUpdateRequest userUpdateRequest, BindingResult result,
+			Model model) {
+		if (result.hasErrors()) {
 			List<String> errorList = new ArrayList<String>();
-			
-			for(ObjectError error : result.getAllErrors()) {
+
+			for (ObjectError error : result.getAllErrors()) {
 				errorList.add(error.getDefaultMessage());
 			}
 			model.addAttribute("validationError", errorList);
@@ -133,7 +134,7 @@ public class UserController {
 		userService.update(userUpdateRequest);
 		return String.format("redirect:/user/%d", userUpdateRequest.getId());
 	}
-	
+
 	/**
 	 * ユーザー情報検索画面を表示
 	 * @param model Model
@@ -144,14 +145,14 @@ public class UserController {
 		model.addAttribute("userSearchRequest", new UserSearchRequest());
 		return "user/search";
 	}
-	
+
 	/**
 	 * ユーザー情報検索
 	 * @param userSearchRequest リクエストデータ
 	 * @param model Model
 	 * @return ユーザー情報一覧画面
 	 */
-	
+
 	@RequestMapping(value = "/user/id_search", method = RequestMethod.POST)
 	public String search(@ModelAttribute UserSearchRequest userSearchRequest, Model model) {
 		User user = userService.search(userSearchRequest);
